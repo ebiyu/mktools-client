@@ -11,7 +11,7 @@ capture = cv2.VideoCapture(0)
 # カメラがオープン出来たか？
 camera_opened = capture.isOpened()
 
-track_id = 1
+track_id = 81
 while camera_opened:
 
     # フレーム画像の取得
@@ -24,7 +24,7 @@ while camera_opened:
         # キー入力で終了
         cv2.imwrite(f"tracks/{track_id}.png", frame)
         track_id += 1
-        if track_id > 81:
+        if track_id > 88:
             break
 
 capture.release()

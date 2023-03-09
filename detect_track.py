@@ -6,7 +6,7 @@ import numpy as np
 @cache
 def load_template_images():
     template_images = [None]
-    for i in range(1, 81):
+    for i in range(1, 89):
         template_images.append(cv2.imread(f"tracks/{i}.png"))
     return template_images
 
