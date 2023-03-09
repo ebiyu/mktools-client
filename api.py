@@ -2,6 +2,8 @@ from pathlib import Path
 import json
 import requests
 
+track_cache = {}
+
 def get_token():
     path = Path("token.json")
     if not path.exists():
@@ -25,6 +27,20 @@ def register_record(time, track, comment):
             "Authorization": "Token " + get_token(),
         },
     )
+    del track_cache[track]
+
+def get_track_info(track_id):
+    if track_id in track_cache:
+        return track_cache[track_id]
+
+    res = requests.get(
+        f"https://nita.ebiyuu.com/api/track/{track_id}/",
+        headers={
+            "Authorization": "Token " + get_token(),
+        },
+    ).json()
+    track_cache[track_id] = res
+    return res
 
 
 if __name__ == "__main__":

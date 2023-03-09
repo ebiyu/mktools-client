@@ -1,11 +1,16 @@
 from collections import deque
+from logging import getLogger, basicConfig, INFO
 
 import device
 import cv2
 
 from trim_numbers import im2resulttime
-from api import register_record, get_token
+from api import register_record, get_token, get_track_info
 from detect_track import detect_track
+
+
+basicConfig(level=INFO)
+logger = getLogger(__name__)
 
 #track = int(input("Please input track ID > "))
 track = -1
@@ -48,6 +53,8 @@ def sixdigit2sec(txt):
     return m * 60 + s + f / 1000
 
 def format_6digit(txt):
+    if txt is None:
+        return None
     m = txt[0]
     s = txt[1:3]
     f = txt[3:]
@@ -87,12 +94,19 @@ while camera_opened:
 
     # 画像の表示
 
-    cv2.putText(prev_im, f"track: {track}", (10, 50), 
-    fontFace=cv2.FONT_HERSHEY_TRIPLEX,
-            fontScale=1.0,
-            color=(0, 0, 255),
-            thickness=2,
-            lineType=cv2.LINE_4)
+    if track is not None and track != -1:
+        try:
+            track_info = get_track_info(track)
+            track_info_txt = f"{track_info['name_en']} / WR: {format_6digit(track_info.get('wr')) or '-'} / My best: {format_6digit(track_info.get('best_score')) or '-'}"
+            cv2.putText(prev_im, track_info_txt, (10, 50), 
+            fontFace=cv2.FONT_HERSHEY_TRIPLEX,
+                    fontScale=1.0,
+                    color=(0, 0, 255),
+                    thickness=2,
+                    lineType=cv2.LINE_4)
+        except:
+            logger.exception("Error in track API")
+
     cv2.imshow("Image", prev_im)
 
     if cv2.waitKey(1) == 27:
