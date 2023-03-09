@@ -19,14 +19,14 @@ def detect_track(frame, prev_im=None):
 
         
     # detect TA
-    im1_cropped = im1[940:1045, 0:1260, :]
-    frm_cropped = frame[940:1045, 0:1260, :]
+    im1_cropped = im1[940:1045, 500:1260, :]
+    frm_cropped = frame[940:1045, 500:1260, :]
     diff = cv2.subtract(im1_cropped, frm_cropped)
     diff_gray= cv2.cvtColor(diff, cv2.COLOR_BGR2GRAY)
     _, diff_bin = cv2.threshold(diff, 10, 255, cv2.THRESH_BINARY)
     diff_bin_gray = cv2.cvtColor(diff_bin, cv2.COLOR_BGR2GRAY)
 
-    is_ta = np.count_nonzero(diff_bin_gray) < diff_bin_gray.size * 0.3
+    is_ta = np.count_nonzero(diff_bin_gray) < diff_bin_gray.size * 0.2
 
     # 画像の表示
     if is_ta:
@@ -41,7 +41,7 @@ def detect_track(frame, prev_im=None):
             _, diff_bin = cv2.threshold(diff, 3, 255, cv2.THRESH_BINARY)
             differences.append(np.count_nonzero(diff_bin) / diff_bin.size)
 
-        is_ok = min(differences) < 0.1
+        is_ok = min(differences) < 0.05
         if is_ok:
             i = differences.index(min(differences))
             if prev_im is not None:
@@ -56,7 +56,7 @@ def detect_track(frame, prev_im=None):
         else:
             if prev_im is not None:
                 cv2.rectangle(prev_im, (1280, 915), (1480, 1045), (0, 0, 0), 5)
-            return -1
+            return None
 
 if __name__ == '__main__':
 
