@@ -135,12 +135,14 @@ def im2time_noofset(im, *, offset_y=0, preview=False):
     }
 
 
-def im2time(im, *,preview=False):
+def im2resulttime(im, *,preview=False):
     return im2time_noofset(im, preview=preview) or im2time_noofset(im, offset_y=-45, preview=preview)
+    
 
-# infile = "captures/20230309210458.png"
-#infile = "captures/20230309213416.png"
-infile = "captures/20230309213545.png"
+if __name__ == "__main__":
+    # infile = "captures/20230309210458.png"
+    #infile = "captures/20230309213416.png"
+    infile = "captures/20230309213545.png"
 
-im = cv2.imread(infile)
-print(im2time(im, preview=False))
+    im = cv2.imread(infile)
+    print(im2resulttime(im, preview=False))

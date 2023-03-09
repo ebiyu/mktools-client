@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 opencv-python = "*"
 windows-capture-device-list = "*"
+requests = "*"
 
 [dev-packages]
 
