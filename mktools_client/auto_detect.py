@@ -4,9 +4,9 @@ from logging import getLogger, basicConfig, INFO
 import device
 import cv2
 
-from trim_numbers import im2resulttime
-from api import register_record, get_token, get_track_info
-from detect_track import detect_track
+from .trim_numbers import im2resulttime
+from .api import register_record, get_token, get_track_info
+from .detect_track import detect_track
 
 
 basicConfig(level=INFO)

@@ -3,7 +3,7 @@ import unittest
 
 import cv2
 
-from detect_track import detect_track
+from mktools_client.detect_track import detect_track
 
 class TestTrackDetect(unittest.TestCase):
     def test_1(self):

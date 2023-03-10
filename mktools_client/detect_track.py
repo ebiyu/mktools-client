@@ -1,4 +1,5 @@
 from functools import cache
+from pathlib import Path
 
 import cv2
 import numpy as np
@@ -7,7 +8,7 @@ import numpy as np
 def load_template_images():
     template_images = [None]
     for i in range(1, 81):
-        template_images.append(cv2.imread(f"tracks/{i}.png"))
+        template_images.append(cv2.imread(str(Path(__file__).parent / "data" /  f"tracks/{i}.png")))
     return template_images
 
 def detect_track(frame, prev_im=None):
