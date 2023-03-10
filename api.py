@@ -1,18 +1,28 @@
 from pathlib import Path
+import os
 import json
 import requests
 
 track_cache = {}
 
 def get_token():
-    path = Path("token.json")
-    if not path.exists():
-        token = input("Access https://nita.ebiyuu.com/access-token/ and paste token !! > ")
-        with open(path, "w") as f:
-            json.dump(token, f)
+    path = Path.home() / ".mktools" / "credentials.json"
+    os.makedirs(path.parent, exist_ok=True)
+
+    if path.exists():
+        with open(path) as f:
+            creds = json.load(f)
+    else:
+        creds = {}
+
+    token = creds.get("access-token") 
+    if isinstance(token, str):
         return token
-    with open(path) as f:
-        token = json.load(f)
+
+    token = input("Access https://nita.ebiyuu.com/access-token/ and paste token !! > ")
+    creds["access-token"] = token
+    with open(path, "w") as f:
+        json.dump(creds, f)
     return token
 
 def register_record(time, track, comment):
