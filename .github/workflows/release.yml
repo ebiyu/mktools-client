@@ -1,0 +1,41 @@
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  windows-build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: |
+          pip install pipenv
+          pipenv sync --dev
+      - name: Run test
+        run: |
+          pipenv run test
+      - name: Build
+        run: |
+          pipenv run build
+          zip -r mktools.zip pipenv 
+      - uses: actions/create-release@v1
+        id: create_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist/mktools.exe
+          asset_name: mktools.zip
+          asset_content_type: application/zip
