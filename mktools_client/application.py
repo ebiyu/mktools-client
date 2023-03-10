@@ -1,5 +1,6 @@
 import tkinter as tk
 from time import sleep
+import threading
 
 import cv2
 from PIL import Image, ImageOps, ImageTk
@@ -30,17 +31,18 @@ class Application(tk.Frame):
 
         self.capture = cv2.VideoCapture(0)
 
-        cv2.CV_CAP_PROP_FPS = 60
+        cv2.CV_CAP_PROP_FPS = 30
 
         # create canvas
-        self.canvas = tk.Canvas(master)
-        self.canvas.pack(expand=True, fill=tk.BOTH)
+        self.video_button = tk.Button(master)
+        self.video_button.pack(expand=True, fill=tk.BOTH)
 
         self.subwin = tk.Toplevel()
         self.subwin.title("MKview")
         self.subwin.state("zoomed")
-        self.sub_canvas = tk.Canvas(self.subwin)
-        self.sub_canvas.pack(expand=True, fill=tk.BOTH)
+
+        self.sub_video_button = tk.Button(self.subwin)
+        self.sub_video_button.pack(expand=True, fill=tk.BOTH)
 
         self.video_loop()
 
@@ -59,8 +61,8 @@ class Application(tk.Frame):
         cv_image = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
         pil_image = Image.fromarray(cv_image)
 
-        canvas_width = self.sub_canvas.winfo_width()
-        canvas_height = self.sub_canvas.winfo_height()
+        canvas_width = self.sub_video_button.winfo_width()
+        canvas_height = self.sub_video_button.winfo_height()
 
         # resize image
         pil_image = ImageOps.pad(pil_image, (canvas_width, canvas_height))
@@ -68,19 +70,14 @@ class Application(tk.Frame):
         # this must be stored to class to prevent from being destroied
         self.photo_image_sub = ImageTk.PhotoImage(image=pil_image)
 
-        # 画像の描画
-        self.sub_canvas.create_image(
-            0, 0,
-            image=self.photo_image_sub,
-            anchor='nw'
-        )
+        self.sub_video_button.config(image=self.photo_image_sub)
 
     def draw_on_canvas(self, im):
         cv_image = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
         pil_image = Image.fromarray(cv_image)
 
-        canvas_width = self.canvas.winfo_width()
-        canvas_height = self.canvas.winfo_height()
+        canvas_width = self.video_button.winfo_width()
+        canvas_height = self.video_button.winfo_height()
 
         # resize image
         pil_image = ImageOps.pad(pil_image, (canvas_width, canvas_height))
@@ -88,12 +85,7 @@ class Application(tk.Frame):
         # this must be stored to class to prevent from being destroied
         self.photo_image = ImageTk.PhotoImage(image=pil_image)
 
-        # 画像の描画
-        self.canvas.create_image(
-            0, 0,
-            image=self.photo_image,
-            anchor='nw'
-        )
+        self.video_button.config(image=self.photo_image)
 
 def launch_app():
     win = tk.Tk()
