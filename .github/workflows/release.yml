@@ -1,7 +1,7 @@
 on:
   push:
     tags:
-      - "v*.*.*"
+      - "v*"
 
 jobs:
   windows-build:
@@ -19,9 +19,7 @@ jobs:
         run: |
           pipenv run test
       - name: Build
-        run: |
-          pipenv run build
-          zip -r mktools.zip pipenv 
+        run: pipenv run build
       - uses: actions/create-release@v1
         id: create_release
         env:
