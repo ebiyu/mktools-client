@@ -1,8 +1,7 @@
-from mktools_client.auto_detect import start_auto_detect
+from mktools_client.application import launch_app
 
 def main():
-    print("hey")
-    start_auto_detect()
+    launch_app()
 
 if __name__ == "__main__":
     main()

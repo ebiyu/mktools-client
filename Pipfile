@@ -8,6 +8,7 @@ opencv-python = "*"
 windows-capture-device-list = "*"
 requests = "*"
 pyinstaller = "*"
+pillow = "*"
 
 [dev-packages]
 
