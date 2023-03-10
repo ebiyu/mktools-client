@@ -4,7 +4,7 @@ from logging import getLogger, basicConfig, INFO
 import device
 import cv2
 
-from .image.ta_result import im2resulttime
+from .image.ta_result import detect_ta_result
 from .api import register_record, get_token, get_track_info
 from .image.ta_track import detect_track
 
@@ -73,7 +73,7 @@ def start_auto_detect():
         if track_queue.get() is not None:
             track = track_queue.get()
 
-        result = im2resulttime(frame)
+        result = detect_ta_result(frame)
         if result is not None:
             sum_secs = sixdigit2sec(result["sum"])
             sum_secs_lap = 0

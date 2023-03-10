@@ -3,13 +3,13 @@ import unittest
 
 import cv2
 
-from mktools_client.image.ta_result import im2resulttime
+from mktools_client.image.ta_result import detect_ta_result
 
 class TestResultDetect(unittest.TestCase):
     def test_1(self):
         file = Path(__file__).parent / "data" / "result_test_1.png"
         im = cv2.imread(str(file))
-        result = im2resulttime(im)
+        result = detect_ta_result(im)
         self.assertEqual(result['sum'], "240154")
         self.assertEqual(result['laps'][0], "055095")
         self.assertEqual(result['laps'][1], "052334")
@@ -18,5 +18,5 @@ class TestResultDetect(unittest.TestCase):
     def test_none(self):
         file = Path(__file__).parent / "data" / "result_test_none.png"
         im = cv2.imread(str(file))
-        result = im2resulttime(im)
+        result = detect_ta_result(im)
         self.assertEqual(result, None)

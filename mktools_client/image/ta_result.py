@@ -52,12 +52,9 @@ def img2num(im, reverse=False):
         on_arr.append(1 if is_on else 0)
     return digits2num(on_arr)
 
-def im2time_noofset(im, *, offset_y=0, preview=False):
+def im2time_noofset(im, prev_im=None, *, offset_y=0):
     assert im.shape[0] == 1080
     assert im.shape[1] == 1920
-
-    if preview:
-        im_copy = im.copy()
 
     start_points = [
         (1566, 224 + offset_y),
@@ -92,9 +89,9 @@ def im2time_noofset(im, *, offset_y=0, preview=False):
             return None
         result_sum.append(str(num))
 
-        if preview:
-            cv2.rectangle(im_copy, (x, y), (x + w, y  + h), (0, 255, 0), 1)
-            cv2.putText(im_copy, str(num), (x, y), 
+        if prev_im is not None:
+            cv2.rectangle(prev_im, (x, y), (x + w, y  + h), (0, 255, 0), 1)
+            cv2.putText(prev_im, str(num), (x, y), 
             fontFace=cv2.FONT_HERSHEY_TRIPLEX,
                     fontScale=1.0,
                     color=(0, 0, 255),
@@ -112,9 +109,9 @@ def im2time_noofset(im, *, offset_y=0, preview=False):
                 return None
             result_current_lap.append(str(num))
 
-            if preview:
-                cv2.rectangle(im_copy, (x, y), (x + w, y  + h), (0, 255, 0), 1)
-                cv2.putText(im_copy, str(num), (x, y), 
+            if prev_im is not None:
+                cv2.rectangle(prev_im, (x, y), (x + w, y  + h), (0, 255, 0), 1)
+                cv2.putText(prev_im, str(num), (x, y), 
                 fontFace=cv2.FONT_HERSHEY_TRIPLEX,
                         fontScale=1.0,
                         color=(0, 0, 255),
@@ -122,13 +119,10 @@ def im2time_noofset(im, *, offset_y=0, preview=False):
                         lineType=cv2.LINE_4)
         result_laps.append(result_current_lap)
 
-    if preview:
-        cv2.imshow("Image", im_copy)
-        cv2.waitKey()
     return {
         "sum": "".join(result_sum),
         "laps": ["".join(lap) for lap in result_laps],
     }
 
-def im2resulttime(im, *,preview=False):
-    return im2time_noofset(im, preview=preview) or im2time_noofset(im, offset_y=-45, preview=preview)
+def detect_ta_result(im, prev_im=None):
+    return im2time_noofset(im, prev_im) or im2time_noofset(im, prev_im, offset_y=-45)
