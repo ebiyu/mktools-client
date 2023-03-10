@@ -17,4 +17,4 @@ python_version = "3.10"
 [scripts]
 test = "python -m unittest"
 build = "pyinstaller mktools.spec"
-makespec = "pyi-makespec mktools.py --windowed"
+makespec = "pyi-makespec mktools.py --onefile"
