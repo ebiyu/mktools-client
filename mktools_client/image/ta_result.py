@@ -1,10 +1,8 @@
 import cv2
 import numpy as np
 
-
-# 上 左上 右上 中央 左下 右下 下
-
 def digits2num(arr):
+    # 上 左上 右上 中央 左下 右下 下
     segments = [
         (1, 1, 1, 0, 1, 1, 1),  #0
         (0, 0, 1, 0, 0, 1, 0),  #1
@@ -21,7 +19,6 @@ def digits2num(arr):
         if tuple(arr) == right:
             return i
     return -1
-
 
 def img2num(im, reverse=False):
     cropped_image_gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
@@ -125,7 +122,6 @@ def im2time_noofset(im, *, offset_y=0, preview=False):
                         lineType=cv2.LINE_4)
         result_laps.append(result_current_lap)
 
-
     if preview:
         cv2.imshow("Image", im_copy)
         cv2.waitKey()
@@ -134,15 +130,5 @@ def im2time_noofset(im, *, offset_y=0, preview=False):
         "laps": ["".join(lap) for lap in result_laps],
     }
 
-
 def im2resulttime(im, *,preview=False):
     return im2time_noofset(im, preview=preview) or im2time_noofset(im, offset_y=-45, preview=preview)
-    
-
-if __name__ == "__main__":
-    # infile = "captures/20230309210458.png"
-    #infile = "captures/20230309213416.png"
-    infile = "captures/20230309213545.png"
-
-    im = cv2.imread(infile)
-    print(im2resulttime(im, preview=False))

@@ -3,7 +3,7 @@ import unittest
 
 import cv2
 
-from mktools_client.trim_numbers import im2resulttime
+from mktools_client.image.ta_result import im2resulttime
 
 class TestResultDetect(unittest.TestCase):
     def test_1(self):

@@ -8,7 +8,7 @@ import numpy as np
 def load_template_images():
     template_images = [None]
     for i in range(1, 81):
-        template_images.append(cv2.imread(str(Path(__file__).parent / "data" /  f"tracks/{i}.png")))
+        template_images.append(cv2.imread(str(Path(__file__).parent.parent / "data" /  f"tracks/{i}.png")))
     return template_images
 
 def detect_track(frame, prev_im=None):
@@ -58,27 +58,3 @@ def detect_track(frame, prev_im=None):
             if prev_im is not None:
                 cv2.rectangle(prev_im, (1280, 915), (1480, 1045), (0, 0, 0), 5)
             return None
-
-if __name__ == '__main__':
-
-    # カメラをオープンする
-    capture = cv2.VideoCapture(0)
-
-    # カメラがオープン出来たか？
-    camera_opened = capture.isOpened()
-
-    while camera_opened:
-
-        # フレーム画像の取得
-        ret, frame = capture.read()
-        frame_copy = frame.copy()
-
-        i = detect_track(frame, frame_copy)
-
-        cv2.imshow("Image", frame_copy)
-
-        if cv2.waitKey(1) != -1:
-            break
-
-    capture.release()
-    cv2.destroyAllWindows()
