@@ -31,7 +31,7 @@ class Application(tk.Frame):
 
         self.capture = cv2.VideoCapture(0)
 
-        cv2.CV_CAP_PROP_FPS = 30
+        cv2.CV_CAP_PROP_FPS = 60
 
         # create canvas
         self.video_button = tk.Button(master)
