@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
 
+from ..util import sixdigit2sec
+
 def digits2num(arr):
     # 上 左上 右上 中央 左下 右下 下
     segments = [
@@ -126,3 +128,15 @@ def im2time_noofset(im, prev_im=None, *, offset_y=0):
 
 def detect_ta_result(im, prev_im=None):
     return im2time_noofset(im, prev_im) or im2time_noofset(im, prev_im, offset_y=-45)
+
+
+def validate_ta_result(result):
+    if result is None:
+        return False
+
+    sum_secs = sixdigit2sec(result["sum"])
+    sum_secs_lap = 0
+    for txt in result["laps"]:
+        sum_secs_lap += sixdigit2sec(txt)
+    
+    return abs(sum_secs - sum_secs_lap) < 0.01
