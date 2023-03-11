@@ -42,4 +42,5 @@ class Reader:
         result = detect_ta_result(im, im_prev)
         if validate_ta_result(result):
             self.result = result
-            print(result)
+        else:
+            self.result = None

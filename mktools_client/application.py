@@ -184,20 +184,20 @@ class Application(tk.Frame):
             self.track_info_var.set("")
 
         if self.reader.track and self.reader.result:
-            if not record_sent:
+            if not self.record_sent:
                 def register_func():
                     register_record(
-                        sum=self.reader.result["sum"],
-                        label=self.reader.track,
+                        time=self.reader.result["sum"],
+                        track=self.reader.track,
                         comment="/".join(map(format_6digit, self.reader.result["laps"])),
                     )
                     logger.info(f"sent: {self.reader.result}")
 
                 t = threading.Thread(target=register_func)
                 t.start()
-                record_sent = True
+                self.record_sent = True
         else:
-            record_sent = False
+            self.record_sent = False
 
         self.draw_on_canvas(im_prev)
         self.draw_on_sub_canvas(im)
