@@ -3,26 +3,28 @@ import datetime
 import device
 import cv2
 
-print(device.getDeviceList())
 
-# カメラをオープンする
-capture = cv2.VideoCapture(0)
+if __name__ == "__main__":
+    print(device.getDeviceList())
 
-# カメラがオープン出来たか？
-camera_opened = capture.isOpened()
+    # カメラをオープンする
+    capture = cv2.VideoCapture(0)
 
-while camera_opened:
+    # カメラがオープン出来たか？
+    camera_opened = capture.isOpened()
 
-    # フレーム画像の取得
-    ret, frame = capture.read()
-    
-    # 画像の表示
-    cv2.imshow("Image", frame)
+    while camera_opened:
 
-    if cv2.waitKey(1) != -1:
-        # キー入力で終了
-        cv2.imwrite("captures/" + datetime.datetime.now().strftime("%Y%m%d%H%M%S") + ".png", frame)
-        break
+        # フレーム画像の取得
+        ret, frame = capture.read()
+        
+        # 画像の表示
+        cv2.imshow("Image", frame)
 
-capture.release()
-cv2.destroyAllWindows()
+        if cv2.waitKey(1) != -1:
+            # キー入力で終了
+            cv2.imwrite("captures/" + datetime.datetime.now().strftime("%Y%m%d%H%M%S") + ".png", frame)
+            break
+
+    capture.release()
+    cv2.destroyAllWindows()
