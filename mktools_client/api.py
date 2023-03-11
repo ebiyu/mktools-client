@@ -1,4 +1,5 @@
 from pathlib import Path
+from tkinter import simpledialog
 import os
 import json
 import requests
@@ -19,7 +20,7 @@ def get_token():
     if isinstance(token, str):
         return token
 
-    token = input("Access https://nita.ebiyuu.com/access-token/ and paste token !! > ")
+    token = simpledialog.askstring("mktools", "Access https://nita.ebiyuu.com/access-token/ and paste token!!")
     creds["access-token"] = token
     with open(path, "w") as f:
         json.dump(creds, f)
