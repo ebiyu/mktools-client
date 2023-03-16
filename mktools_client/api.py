@@ -20,7 +20,7 @@ def get_token():
     if isinstance(token, str):
         return token
 
-    token = simpledialog.askstring("mktools", "Access https://nita.ebiyuu.com/access-token/ and paste token!!")
+    token = simpledialog.askstring("mktools", "Access https://mktools.ebiyuu.com/access-token/ and paste token!!")
     creds["access-token"] = token
     with open(path, "w") as f:
         json.dump(creds, f)
@@ -28,7 +28,7 @@ def get_token():
 
 def register_record(time, track, comment):
     requests.post(
-        "https://nita.ebiyuu.com/api/record/",
+        "https://mktools.ebiyuu.com/api/record/",
         json={
             "time": time,
             "track": track,
@@ -45,7 +45,7 @@ def get_track_info(track_id):
         return track_cache[track_id]
 
     res = requests.get(
-        f"https://nita.ebiyuu.com/api/track/{track_id}/",
+        f"https://mktools.ebiyuu.com/api/track/{track_id}/",
         headers={
             "Authorization": "Token " + get_token(),
         },
